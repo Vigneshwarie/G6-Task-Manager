@@ -32,6 +32,10 @@ function getTaskFromLocalStorage() {
                               <button type="button" class="editbtn">Edit</button>
                               <button type="button" class="deletebtn">Delete</button>
                          </div>`;
+          var editBtn = divEl.querySelector(".editbtn");
+          var deleteBtn = divEl.querySelector(".deletebtn");
+          editBtn.addEventListener("click", editTaskItem);
+          deleteBtn.addEventListener("click", deleteTaskItem);
           taskList.appendChild(divEl);
      }
      });
@@ -54,10 +58,16 @@ function addTaskItem(event) {
                               <button type="button" class="editbtn">Edit</button>
                               <button type="button" class="deletebtn">Delete</button>
                          </div>`;
+          
+          var editBtn = divEl.querySelector(".editbtn");
+          var deleteBtn = divEl.querySelector(".deletebtn");
+          editBtn.addEventListener("click", editTaskItem);
+          deleteBtn.addEventListener("click", deleteTaskItem);
           taskList.appendChild(divEl);
           addTaskToLocalStorage(itemId, taskItem);
      }
      else if (taskItem && isEdit) {
+          
           
      }
      else {
@@ -72,8 +82,37 @@ function addTaskToLocalStorage(itemKey, itemValue) {
 }
 
 // A function to edit the task to localstorage
+function editTaskItem(event) {
+     var itemElement = event.currentTarget.parentElement.parentElement;
+     var itemId = itemElement.getAttribute("item-id")
+     var x = event.currentTarget.parentElement;
+     var inputText = document.createElement("input");
+     var textid = document.createAttribute("id");
+     textid.value = itemId;
+     inputText.setAttributeNode(textid);
+     inputText.value = itemElement.children[0].innerHTML;
+     itemElement.removeChild(itemElement.children[0]);
+     itemElement.removeChild(itemElement.children[0]);
+     itemElement.appendChild(inputText);
+     itemElement.appendChild(x);
+  
+     
+     console.log(itemElement);
+     console.log(x);
+
+     
+}
 
 // A function to delete the task from localstorage
+function deleteTaskItem(event) {
+     var itemElement = event.currentTarget.parentElement.parentElement;
+     taskList.removeChild(itemElement);
+     deleteTaskFromLocalStorage(itemElement.getAttribute("item-id"));
+}
+
+function deleteTaskFromLocalStorage(itemKey) {
+     localStorage.removeItem(itemKey);
+}
 
 // EventListeners
 taskForm.addEventListener("submit", addTaskItem);
