@@ -1,58 +1,58 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-     <meta charset="UTF-8">
-     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <meta charset="UTF-8" />
+     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
      <title>Task Manager</title>
-    </head>
- <header>
-     <h1>Task Manager</h1>
-     <button type = "login" class="login-btn" > 
-          login 
- </button>
-    </header>
+    
+     <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+     <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" />
+     <!--link rel="stylesheet" href="https:/resources/demos/style.css"-->
+     <link rel="stylesheet" href="./assets/css/style.css" />
+     <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+     <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+     <script src="https://cdn.jsdelivr.net/npm/dayjs@1.11.3/dayjs.min.js"
+          integrity="sha256-iu/zLUB+QgISXBLCW/mcDi/rnf4m4uEDO0wauy76x7U=" crossorigin="anonymous"></script>
+     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+     <script>
+          $(function () {
+               $("#datepicker").datepicker();
+          });
+     </script>
+</head>
 
-   
+
+
 <body>
-     <div>
+     <div class="card">
+          <h1>Task Manager</h1>
+          <form id="task-form">
+               <label for="task-text">Add a Task: </label>
+               <input type="text" placeholder="I need to..." name="task-text" id="task-text" />
+               <button type="submit" value="submit" id="submitBtn">Submit</button>
+          </form>
+          
+          <div class="task-container">
+               <div class="task-list" id="task-list">
+                    <!--div class="task-item">
+                         <p>Sample Task</p>
+                         <div>
+                              <input type="text" class="form-control" id="datepicker" autocomplete="off" />
+                              <button type="button" class="editbtn">Edit</button>
+                              <button type="button" class="deletebtn">Delete</button>
+                         </div>
+                    </div-->
+               </div>
+          
+          </div>
+
+     </div>
+
+     <script src="./assets/js/script.js"></script>
     
-     <time datetime= "" >
-     <input type ="text" Placeholder = "input">
-     <button type = "submit" class="submit-btn" > 
-          submit
-</button>
-</div>
-
-
-     <div  class="task-container" >
-       <div class="task-list">
-        <article class= "task-item" >
-           <p class="title">item</p>
-            <div  class="btn-container" >
-               <button type = "delete" class="delete-btn" > 
-             delete
-             <i class="fas fa-trash"></i>
-      </button>
-      <button type = "edit" class="edit-btn" > 
-           edit
-           <i class="fas fa-edit"></i>
-      </button>
-      </div>
-     </article>
-      </div>
-      </div>
-
-      <button type = "clear" class="clear-btn" > 
-          clear </button>
-  
-   
-         
-
-     
-     
-     
-    
-     <ul id = "tasklist" >
-     
 </body>
+
 </html>
