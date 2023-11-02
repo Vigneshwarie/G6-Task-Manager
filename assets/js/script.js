@@ -21,9 +21,10 @@ var inputTextEl;
 //https://stackoverflow.com/questions/63636214/jquery-to-retrieve-multiple-keys-with-same-starting-pattern-from-localstorage
 function getTaskFromLocalStorage() {
      vId = "TAM-" + dayjs().format('YYYYMMDD');
+     console.log(vId);
      Object.entries(localStorage).forEach(([key, value]) => {
      if (key.startsWith(vId)) {
-          console.log(key + "====" + value);
+          console.log(key + "==im here==" + value);
           var divEl = document.createElement("div");
           divEl.classList.add("task-item");
           var idAttr = document.createAttribute("item-id");
