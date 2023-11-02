@@ -30,8 +30,9 @@ function getTaskFromLocalStorage() {
           idAttr.value = key;
           divEl.setAttributeNode(idAttr);
           divEl.innerHTML = ` <p class="showElement">${value}</p>
-                                        <div class="showElement">
-                                             <button type="button" class="editbtn">Edit</button>
+                                        <div class="showElement, block">
+               <button class="button is-info"type="submit" value="submit" id="submitBtn">Submit</button>
+                                             <button type="button" class="button is-info">Edit</button>
                                              <button type="button" class="deletebtn">Delete</button>
                                         </div>
                                         <input type="text" id="${key}" value="${value}" class="hideElement">
