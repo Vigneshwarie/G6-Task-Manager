@@ -19,10 +19,10 @@ var inputTextEl;
 // On page load the value is not ordered. Need to be fixed.
 // The date parameter need to be aligned with the header date in the HTML.
 //https://stackoverflow.com/questions/63636214/jquery-to-retrieve-multiple-keys-with-same-starting-pattern-from-localstorage
-function getTaskFromStorage() {
+function getTaskFromStorage(user) {
      import("./firebasestorage.js").then((module) => {
           console.log("Retrieving Tasks from Firestore");
-          var getAllTasksPromise = module.loadDataFromFirebase();
+          var getAllTasksPromise = module.loadDataFromFirebase(user);
           getAllTasksPromise.then(function (tasksFromFirestore) {
                console.log("asynchronous logging has val:", tasksFromFirestore);
 
@@ -39,12 +39,12 @@ function getTaskFromStorage() {
                          var idAttr = document.createAttribute("item-id");
                          idAttr.value = key;
                          divEl.setAttributeNode(idAttr);
-                         divEl.innerHTML = ` <p class="showElement">${value}</p>
+                         divEl.innerHTML = ` <p class="showElement">${value.taskDecription}</p>
                                                        <div class="showElement">
                                                             <button type="button" class="editbtn">Edit</button>
                                                             <button type="button" class="deletebtn">Delete</button>
                                                        </div>
-                                                       <input type="text" id="${key}" value="${value}" class="hideElement">
+                                                       <input type="text" id="${key}" value="${value.taskDecription}" class="hideElement">
                                                        <div class="hideElement">
                                                             <button type="button" class="editActionBtn">Edit</button>
                                                        </div>`;
@@ -57,12 +57,10 @@ function getTaskFromStorage() {
                });
                     
           }).catch((err) => {
-               console.error(err);
-          });      
-   });
-     
-     
-     
+                console.error(err);
+        });      
+     });
+
 }
 
 // To prevent user from deleting the task while editing it, two different blocks was created which can be toggled based on the requirement
@@ -145,12 +143,17 @@ function deleteTaskItem(event) {
 
 // A function to add task to local storage and Firebase
 function addTaskToLocalStorage(taskKey, taskValue) {
-     localStorage.setItem(taskKey, taskValue);
+     var taskObject = { taskDecription: taskValue,
+          taskId: taskKey
+     };
 
      import("./firebasestorage.js").then((module) => {
-          console.log("Storing Task Id "+taskKey+" to Firestore");
-          module.addToFirebase(taskKey, taskValue);
-   });
+          console.log("Storing Task Id " + taskKey + " to Firestore");
+          taskObject.uid = module.getUser().uid;
+          localStorage.setItem(taskKey, taskObject);
+          module.addToFirebase(taskKey, taskObject);
+
+     });
 }
 
 
@@ -162,13 +165,18 @@ function deleteTaskFromLocalStorage(taskKey) {
      import("./firebasestorage.js").then((module) => {
           console.log("Deleting from Firestore");
           module.deleteFromFirebase(taskKey);
-   });
+     });
      
 }
 
 // EventListeners
 taskForm.addEventListener("submit", addTaskItem);
-getTaskFromStorage();
+
+ import("./firebasestorage.js").then((module) => {
+          console.log("Signing in");
+          module.login();
+     });
+/*getTaskFromStorage(); */
 
 
 
