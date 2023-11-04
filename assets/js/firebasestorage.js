@@ -2,9 +2,10 @@
 //https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules
 
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.5.2/firebase-app.js'
-import { getAuth } from 'https://www.gstatic.com/firebasejs/10.5.2/firebase-auth.js'
-import { doc, setDoc, getFirestore, getDocs, deleteDoc, collection } from 'https://www.gstatic.com/firebasejs/10.5.2/firebase-firestore.js'
+import { getAuth, GoogleAuthProvider, signInWithPopup } from 'https://www.gstatic.com/firebasejs/10.5.2/firebase-auth.js'
+import { doc, setDoc, getFirestore, getDocs, deleteDoc, query, where, collection } from 'https://www.gstatic.com/firebasejs/10.5.2/firebase-firestore.js'
 
+var userLoggedIn;
 
 var firebaseConfig = {
      apiKey: "AIzaSyAJfwMDC06af6XDiOQUATs79X1KKfIX8XM",
@@ -19,73 +20,68 @@ const app = initializeApp(firebaseConfig);
 console.log(app);
 const db = getFirestore(app);
 console.log(db);
+const provider = new GoogleAuthProvider();
 
-
-
-/*
-     await setDoc(doc(db, "tasks", "TAM-20231102020739"), {
-          taskDecription: "This is a new task added for testing",
-          taskId: "TAM-20231102020739"
-     });
-
-*/
 
 export async function addToFirebase(docId, docText) {
- /*     // Method 1
-     db.collection("tasks").doc(docId).set({
-     taskDecription: docText,
-     taskId: docId
-     })
-     .then(() => {
-     console.log("Document added successfully!");
-     })
-     .catch((error) => {
-     console.error("Error writing document: ", error);
-     });
-*/
      console.log("Adding Task to Firebase with Id ",docId);
-     await setDoc(doc(db, "tasks", docId), {
-          taskDecription: docText,
-          taskId: docId
-     });
-
+     await setDoc(doc(db, "tasks", docId), docText);
 }
 
 
 export async function deleteFromFirebase(docId) {
      console.log("Deleting data from Firestore = ", docId);
-     // Method 1
-   /* db.collection("tasks").doc(docId).delete().then(() => {
-          console.log("Document successfully deleted!");
-     }).catch((error) => {
-          console.error("Error removing document: ", error);
-     });     
-     
-     Method 2
-  */
      await deleteDoc(doc(db, "tasks", docId));
    
 }
 
-export async function loadDataFromFirebase() {
-/*     // Method 1
-     db.collection("tasks").get().then((querySnapshot) => {
-          querySnapshot.forEach((doc) => {
-               console.log(doc.id, " => ", doc.data());
-          });
-     });
-
-     // Method 2
-*/
+export async function loadDataFromFirebase(user) {
      var tasks = [];
      var tasksObjects = [];
-     const querySnapshot = await getDocs(collection(db, "tasks"));
+     //const querySnapshot = await getDocs(collection(db, "tasks"));
+     const q = query(collection(db, "tasks"), where("uid", "==", user.uid));
+
+     const querySnapshot = await getDocs(q);
+
      querySnapshot.forEach((doc) => {
           tasks.push(doc.data());
-          tasksObjects.push({ key:doc.id, value:doc.data().taskDecription}) 
+          tasksObjects.push({ key:doc.id, value:doc.data()}) 
           //console.log("This is firebase storage file"+doc.id, " => ", doc.data().taskDecription);
      });
      console.log("Returning from loadDataFromFirebase function", tasksObjects);
      return tasksObjects;
 }
 
+// Authentication Using Firebase Google Authentication
+//https://firebase.google.com/docs/auth/web/google-signin?authuser=0&hl=en
+
+export function login() {
+     const auth = getAuth();
+     signInWithPopup(auth, provider)
+     .then((result) => {
+     // This gives you a Google Access Token. You can use it to access the Google API.
+          const credential = GoogleAuthProvider.credentialFromResult(result);
+          const token = credential.accessToken;
+          // The signed-in user info.                                               
+          const user = result.user;
+          console.log(user);
+          userLoggedIn = user;
+          // Loading the tasks after user authentication
+          getTaskFromStorage(user);
+          // IdP data available using getAdditionalUserInfo(result)                 
+               // ...                                                                    
+     }).catch((error) => {
+          // Handle Errors here.                                                    
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          // The email of the user's account used.
+          const email = error.customData.email;
+          // The AuthCredential type that was used.
+          const credential = GoogleAuthProvider.credentialFromError(error);
+          // ...
+     });
+}
+
+export function getUser() { 
+     return userLoggedIn;
+}
