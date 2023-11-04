@@ -1,7 +1,0 @@
-{
-  "name": "G6-Task-Manager",
-  "packageManager": "yarn@4.0.1",
-  "dependencies": {
-    "node-schedule": "^2.1.1"
-  }
-}

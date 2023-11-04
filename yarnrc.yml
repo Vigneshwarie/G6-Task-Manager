@@ -1,2 +1,0 @@
-enableGlobalCache: false
-cacheFolder: "./.yarn/cache"
