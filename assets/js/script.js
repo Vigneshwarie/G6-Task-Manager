@@ -19,33 +19,49 @@ var inputTextEl;
 // On page load the value is not ordered. Need to be fixed.
 // The date parameter need to be aligned with the header date in the HTML.
 //https://stackoverflow.com/questions/63636214/jquery-to-retrieve-multiple-keys-with-same-starting-pattern-from-localstorage
-function getTaskFromLocalStorage() {
-     vId = "TAM-" + dayjs().format('YYYYMMDD');
-     console.log(vId);
-     Object.entries(localStorage).forEach(([key, value]) => {
-     if (key.startsWith(vId)) {
-          console.log(key + "==im here==" + value);
-          var divEl = document.createElement("div");
-          divEl.classList.add("task-item");
-          var idAttr = document.createAttribute("item-id");
-          idAttr.value = key;
-          divEl.setAttributeNode(idAttr);
-          divEl.innerHTML = ` <p class="showElement">${value}</p>
-                                        <div class="showElement">
-                                             <button type="button" class="editbtn">Edit</button>
-                                             <button type="button" class="deletebtn">Delete</button>
-                                        </div>
-                                        <input type="text" id="${key}" value="${value}" class="hideElement">
-                                        <div class="hideElement">
-                                             <button type="button" class="editActionBtn">Edit</button>
-                                        </div>`;
-          var editBtn = divEl.querySelector(".editbtn");
-          var deleteBtn = divEl.querySelector(".deletebtn");
-          editBtn.addEventListener("click", editTaskItem);
-          deleteBtn.addEventListener("click", deleteTaskItem);
-          taskList.appendChild(divEl);
-     }
-     });
+function getTaskFromStorage() {
+     import("./firebasestorage.js").then((module) => {
+          console.log("Retrieving Tasks from Firestore");
+          var getAllTasksPromise = module.loadDataFromFirebase();
+          getAllTasksPromise.then(function (tasksFromFirestore) {
+               console.log("asynchronous logging has val:", tasksFromFirestore);
+
+               vId = "TAM-" + dayjs().format('YYYYMMDD');
+               console.log(vId);
+              // Object.entries(localStorage).forEach(([key, value]) => {
+               tasksFromFirestore.forEach((task) => {
+                    key = task.key;
+                    value = task.value;                  
+                    if (key.startsWith(vId)) {
+                         console.log(key + "==im here==" + value);
+                         var divEl = document.createElement("div");
+                         divEl.classList.add("task-item");
+                         var idAttr = document.createAttribute("item-id");
+                         idAttr.value = key;
+                         divEl.setAttributeNode(idAttr);
+                         divEl.innerHTML = ` <p class="showElement">${value}</p>
+                                                       <div class="showElement">
+                                                            <button type="button" class="editbtn">Edit</button>
+                                                            <button type="button" class="deletebtn">Delete</button>
+                                                       </div>
+                                                       <input type="text" id="${key}" value="${value}" class="hideElement">
+                                                       <div class="hideElement">
+                                                            <button type="button" class="editActionBtn">Edit</button>
+                                                       </div>`;
+                         var editBtn = divEl.querySelector(".editbtn");
+                         var deleteBtn = divEl.querySelector(".deletebtn");
+                         editBtn.addEventListener("click", editTaskItem);
+                         deleteBtn.addEventListener("click", deleteTaskItem);
+                         taskList.appendChild(divEl);
+                    }
+               });
+                    
+          }).catch((err) => {
+               console.error(err);
+          });      
+   });
+     
+     
      
 }
 
@@ -127,19 +143,32 @@ function deleteTaskItem(event) {
      deleteTaskFromLocalStorage(itemElement.getAttribute("item-id"));
 }
 
-// A function to add task to local storage
+// A function to add task to local storage and Firebase
 function addTaskToLocalStorage(taskKey, taskValue) {
      localStorage.setItem(taskKey, taskValue);
+
+     import("./firebasestorage.js").then((module) => {
+          console.log("Storing Task Id "+taskKey+" to Firestore");
+          module.addToFirebase(taskKey, taskValue);
+   });
 }
 
-// A function to delete task from local storage
+
+
+// A function to delete task from local storage and Firebase
 function deleteTaskFromLocalStorage(taskKey) {
      localStorage.removeItem(taskKey);
+
+     import("./firebasestorage.js").then((module) => {
+          console.log("Deleting from Firestore");
+          module.deleteFromFirebase(taskKey);
+   });
+     
 }
 
 // EventListeners
 taskForm.addEventListener("submit", addTaskItem);
-getTaskFromLocalStorage();
+getTaskFromStorage();
 
 
 
