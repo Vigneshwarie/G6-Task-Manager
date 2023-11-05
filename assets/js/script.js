@@ -7,6 +7,7 @@ var taskForm = document.querySelector("#task-form");
 var taskList = document.querySelector("#task-list");
 var taskCountSpan = document.querySelector("#task-count");
 var submitBtn = document.querySelector("#submitBtn");
+var modelTrigger = document.querySelectorAll('.js-modal-trigger');
 
 
 // Variable Declarations
@@ -23,13 +24,15 @@ function getTaskFromStorage(user) {
           var getAllTasksPromise = module.loadDataFromFirebase(user);
           getAllTasksPromise.then(function (tasksFromFirestore) {
                console.log("asynchronous logging has val:", tasksFromFirestore);
-
+               
                vId = "TAM-" + dayjs().format('YYYYMMDD');
                console.log(vId);
               // Object.entries(localStorage).forEach(([key, value]) => {
                tasksFromFirestore.forEach((task) => {
                     key = task.key;
-                    value = task.value;                  
+                    value = task.value;   
+                    // Display data based on the current date. When the if condition is commented all task of that user will be displayed.
+                    // This condition is added, so that on future developments, the tasks can be navigated based on dates. 
                     if (key.startsWith(vId)) {
                          
                          console.log(key + "==im here==" + value);
@@ -96,7 +99,13 @@ function addTaskItem(event) {
           setDefault();
      }
      else {
-          window.alert("Please add a task to the list");
+          //window.alert("Please add a task to the list");
+          // Modal Alert is referred based Bulma CSS from the given link https://bulma.io/documentation/components/modal/
+          modelTrigger.forEach(($trigger) => {
+               const modal = $trigger.dataset.target;
+               const $target = document.getElementById(modal);
+               openModal($target);
+          }); 
      }
 }
 
@@ -112,8 +121,6 @@ function editTaskItem(event) {
      if (itemElement.children[0].classList.value === "showElement") {
           itemElement.children[0].classList.value = "hideElement";
           itemElement.children[1].classList.value = "showElement";
-         // itemElement.children[2].classList.value = "showElement";
-         // itemElement.children[3].classList.value = "showElement";
      }
      var editActionBtn = itemElement.querySelector("#editActionBtn");
      editActionBtn.addEventListener("click", editItem);
@@ -129,8 +136,6 @@ function editItem(event) {
      if (itemElement.children[0].classList.value === "hideElement") {
           itemElement.children[0].classList.value = "showElement";
           itemElement.children[1].classList.value = "hideElement";
-       //   itemElement.children[2].classList.value = "hideElement";
-          //itemElement.children[3].classList.value = "hideElement";
      }
 }
 
@@ -153,7 +158,6 @@ function addTaskToLocalStorage(taskKey, taskValue) {
           taskObject.uid = module.getUser().uid;
           localStorage.setItem(taskKey, taskObject);
           module.addToFirebase(taskKey, taskObject);
-
      });
 }
 
@@ -175,6 +179,15 @@ taskForm.addEventListener("submit", addTaskItem);
           module.login();
      });
 /*getTaskFromStorage(); */
+
+// Functions to open and close modals
+function openModal($el) {
+    $el.classList.add('is-active');
+}
+
+function closeModal($el) {
+    $el.classList.remove('is-active');
+}
 
 
 
