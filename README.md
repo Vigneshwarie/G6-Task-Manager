@@ -2,7 +2,7 @@
 
 ## Description
 
-The simple task manager application helps us to manage everyday tasks or activities. The single-page application was developed using HTML, CSS, JS technology, and third-party APIs like jQuery, Bulma CSS, and Dayjs. To manage the activities, one must log in to the application. The application offers Google authentication using Firebase and gathers user data for tracking activities for the user. It uses the Firebase firestore database to store and maintain the data in the cloud, which enables one to use the application on any browser. Herewith, the application uses two external APIs of the Firebase for authentication and storage service. However, the application also uses the browser's local storage feature to store the data locally.
+The task manager application helps us to manage everyday tasks or activities. The single-page application was developed using HTML, CSS, JS technology, and third-party APIs like jQuery, Bulma CSS, and Dayjs. To manage the activities, one must log in to the application. The application offers Google authentication using Firebase and gathers user data for tracking activities for the user. It uses the Firebase firestore database to store and maintain the data in the cloud, which enables one to use the application on any browser. Herewith, the application uses two external APIs of the Firebase for authentication and storage service. However, the application also uses the browser's local storage feature to store the data locally.
 
 ## Installation
 
