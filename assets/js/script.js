@@ -15,8 +15,6 @@ var vId;
 
 
 // A function to load the tasks on page load
-// On page load the value is not ordered. Need to be fixed.
-// The date parameter need to be aligned with the header date in the HTML.
 //https://stackoverflow.com/questions/63636214/jquery-to-retrieve-multiple-keys-with-same-starting-pattern-from-localstorage
 function getTaskFromStorage(user) {
      import("./firebasestorage.js").then((module) => {
