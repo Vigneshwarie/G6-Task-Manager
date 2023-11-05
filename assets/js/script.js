@@ -8,6 +8,7 @@ var taskList = document.querySelector("#task-list");
 var taskCountSpan = document.querySelector("#task-count");
 var submitBtn = document.querySelector("#submitBtn");
 
+
 // Variable Declarations
 var vId;
 
@@ -30,23 +31,25 @@ function getTaskFromStorage(user) {
                     key = task.key;
                     value = task.value;                  
                     if (key.startsWith(vId)) {
+                         
                          console.log(key + "==im here==" + value);
                          var divEl = document.createElement("div");
                          divEl.classList.add("task-item");
                          var idAttr = document.createAttribute("item-id");
                          idAttr.value = key;
                          divEl.setAttributeNode(idAttr);
-                         divEl.innerHTML = ` <p class="showElement">${value.taskDecription}</p>
+                         divEl.innerHTML = ` 
                                                        <div class="showElement">
-                                                            <button type="button" class="editbtn">Edit</button>
-                                                            <button type="button" class="deletebtn">Delete</button>
+                                                            <p>${value.taskDecription}</p>
+                                                            <button type="button" class="button is-link is-medium" id="editbtn">Edit</button>
+                                                            <button type="button" class="button is-link is-medium" id="deletebtn">Delete</button>
                                                        </div>
-                                                       <input type="text" id="${key}" value="${value.taskDecription}" class="hideElement">
                                                        <div class="hideElement">
-                                                            <button type="button" class="editActionBtn">Edit</button>
+                                                            <input type="text" id="${key}" value="${value.taskDecription}" class="input is-medium">
+                                                            <button type="button" class="button is-link is-medium" id="editActionBtn">Edit</button>
                                                        </div>`;
-                         var editBtn = divEl.querySelector(".editbtn");
-                         var deleteBtn = divEl.querySelector(".deletebtn");
+                         var editBtn = divEl.querySelector("#editbtn");
+                         var deleteBtn = divEl.querySelector("#deletebtn");
                          editBtn.addEventListener("click", editTaskItem);
                          deleteBtn.addEventListener("click", deleteTaskItem);
                          taskList.appendChild(divEl);
@@ -73,18 +76,19 @@ function addTaskItem(event) {
           var idAttr = document.createAttribute("item-id");
           idAttr.value = itemId;
           divEl.setAttributeNode(idAttr);
-          divEl.innerHTML = ` <p class="showElement">${taskItem}</p>
+          divEl.innerHTML = ` 
                                         <div class="showElement">
-                                             <button type="button" class="editbtn">Edit</button>
-                                             <button type="button" class="deletebtn">Delete</button>
+                                             <p>${taskItem}</p>
+                                             <button type="button" class="button is-link is-medium" id="editbtn">Edit</button>
+                                             <button type="button" class="button is-link is-medium" id="deletebtn">Delete</button>
                                         </div>
-                                        <input type="text" id="${itemId}" value="${taskItem}" class="hideElement">
                                         <div class="hideElement">
-                                             <button type="button" class="editActionBtn">Edit</button>
+                                             <input type="text" id="${itemId}" value="${taskItem}" class="input is-medium">
+                                             <button type="button" class="button is-link is-medium" id="editActionBtn">Edit</button>
                                         </div>`;
           
-          var editBtn = divEl.querySelector(".editbtn");
-          var deleteBtn = divEl.querySelector(".deletebtn");
+          var editBtn = divEl.querySelector("#editbtn");
+          var deleteBtn = divEl.querySelector("#deletebtn");
           editBtn.addEventListener("click", editTaskItem);
           deleteBtn.addEventListener("click", deleteTaskItem);
           taskList.appendChild(divEl);
@@ -104,29 +108,29 @@ function setDefault() {
 // A function to toggle the edit event and call the editAction
 function editTaskItem(event) {
      var itemElement = event.currentTarget.parentElement.parentElement;
-     console.log(itemElement);
+
      if (itemElement.children[0].classList.value === "showElement") {
           itemElement.children[0].classList.value = "hideElement";
-          itemElement.children[1].classList.value = "hideElement";
-          itemElement.children[2].classList.value = "showElement";
-          itemElement.children[3].classList.value = "showElement";
+          itemElement.children[1].classList.value = "showElement";
+         // itemElement.children[2].classList.value = "showElement";
+         // itemElement.children[3].classList.value = "showElement";
      }
-     var editActionBtn = itemElement.querySelector(".editActionBtn");
+     var editActionBtn = itemElement.querySelector("#editActionBtn");
      editActionBtn.addEventListener("click", editItem);
 }
 
 // Edit the value and update local storage
 function editItem(event) {
      var itemElement = event.currentTarget.parentElement.parentElement;
-     var value = itemElement.children[2].value;
-     var key = itemElement.children[2].id;
-     itemElement.children[0].innerHTML = value;
+     var value = itemElement.children[1].children[0].value;
+     var key = itemElement.children[1].children[0].id;
+     itemElement.children[0].children[0].innerHTML = value;
      addTaskToLocalStorage(key, value);
      if (itemElement.children[0].classList.value === "hideElement") {
           itemElement.children[0].classList.value = "showElement";
-          itemElement.children[1].classList.value = "showElement";
-          itemElement.children[2].classList.value = "hideElement";
-          itemElement.children[3].classList.value = "hideElement";
+          itemElement.children[1].classList.value = "hideElement";
+       //   itemElement.children[2].classList.value = "hideElement";
+          //itemElement.children[3].classList.value = "hideElement";
      }
 }
 
