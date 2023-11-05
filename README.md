@@ -18,13 +18,13 @@ The code can be downloaded from the above link. To use this webpage, click the H
 
 ![Alt text](assets/images/LandingPageAfterLogin.png)
 
-During editing
+### During editing
 ![Alt text](assets/images/EditScreen.png)
 
-After Edit
+### After Edit
 ![Alt text](assets/images/AfterEdit.png)
 
-After Delete
+### After Delete
 ![Alt text](assets/images/AfterDelete.png)
 
 ## API Details
