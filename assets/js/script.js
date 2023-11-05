@@ -1,4 +1,4 @@
-// localstorage key format -> tam-YYYYMMDD
+// localstorage key format -> tam-YYYYMMDDhhmmss
 
 // Element Selection
 
@@ -8,11 +8,8 @@ var taskList = document.querySelector("#task-list");
 var taskCountSpan = document.querySelector("#task-count");
 var submitBtn = document.querySelector("#submitBtn");
 
-
-
 // Variable Declarations
 var vId;
-var inputTextEl;
 
 
 // A function to load the tasks on page load
@@ -54,8 +51,7 @@ function getTaskFromStorage(user) {
                          deleteBtn.addEventListener("click", deleteTaskItem);
                          taskList.appendChild(divEl);
                     }
-               });
-                    
+               });                   
           }).catch((err) => {
                 console.error(err);
         });      
@@ -141,7 +137,8 @@ function deleteTaskItem(event) {
      deleteTaskFromLocalStorage(itemElement.getAttribute("item-id"));
 }
 
-// A function to add task to local storage and Firebase
+// A function to add task to local storage and Firestore
+// Initially the local storage has provision to store key and value as string. Now it is stored as objects.
 function addTaskToLocalStorage(taskKey, taskValue) {
      var taskObject = { taskDecription: taskValue,
           taskId: taskKey
@@ -156,9 +153,7 @@ function addTaskToLocalStorage(taskKey, taskValue) {
      });
 }
 
-
-
-// A function to delete task from local storage and Firebase
+// A function to delete task from local storage and Firestore
 function deleteTaskFromLocalStorage(taskKey) {
      localStorage.removeItem(taskKey);
 
@@ -166,12 +161,11 @@ function deleteTaskFromLocalStorage(taskKey) {
           console.log("Deleting from Firestore");
           module.deleteFromFirebase(taskKey);
      });
-     
 }
 
 // EventListeners
 taskForm.addEventListener("submit", addTaskItem);
-
+// On page loads, the login function is called which shows the Google login option
  import("./firebasestorage.js").then((module) => {
           console.log("Signing in");
           module.login();
