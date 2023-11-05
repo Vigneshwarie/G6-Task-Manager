@@ -17,3 +17,7 @@ p {
 .task-list {
      margin: 1.25rem;
 }
+
+.title {
+     text-align: center;
+}

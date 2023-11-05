@@ -44,12 +44,12 @@ function getTaskFromStorage(user) {
                          divEl.innerHTML = ` 
                                                        <div class="showElement">
                                                             <p>${value.taskDecription}</p>
-                                                            <button type="button" class="button is-link is-medium" id="editbtn">Edit</button>
-                                                            <button type="button" class="button is-link is-medium" id="deletebtn">Delete</button>
+                                                            <button type="button" class="button is-link is-normal" id="editbtn">Edit</button>
+                                                            <button type="button" class="button is-link is-normal" id="deletebtn">Delete</button>
                                                        </div>
                                                        <div class="hideElement">
-                                                            <input type="text" id="${key}" value="${value.taskDecription}" class="input is-medium">
-                                                            <button type="button" class="button is-link is-medium" id="editActionBtn">Edit</button>
+                                                            <input type="text" id="${key}" value="${value.taskDecription}" class="input is-normal">
+                                                            <button type="button" class="button is-link is-normal" id="editActionBtn">Edit</button>
                                                        </div>`;
                          var editBtn = divEl.querySelector("#editbtn");
                          var deleteBtn = divEl.querySelector("#deletebtn");
@@ -82,12 +82,12 @@ function addTaskItem(event) {
           divEl.innerHTML = ` 
                                         <div class="showElement">
                                              <p>${taskItem}</p>
-                                             <button type="button" class="button is-link is-medium" id="editbtn">Edit</button>
-                                             <button type="button" class="button is-link is-medium" id="deletebtn">Delete</button>
+                                             <button type="button" class="button is-link is-normal" id="editbtn">Edit</button>
+                                             <button type="button" class="button is-link is-normal" id="deletebtn">Delete</button>
                                         </div>
                                         <div class="hideElement">
-                                             <input type="text" id="${itemId}" value="${taskItem}" class="input is-medium">
-                                             <button type="button" class="button is-link is-medium" id="editActionBtn">Edit</button>
+                                             <input type="text" id="${itemId}" value="${taskItem}" class="input is-normal">
+                                             <button type="button" class="button is-link is-normal" id="editActionBtn">Edit</button>
                                         </div>`;
           
           var editBtn = divEl.querySelector("#editbtn");
