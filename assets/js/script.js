@@ -8,6 +8,9 @@ var taskList = document.querySelector("#task-list");
 var taskCountSpan = document.querySelector("#task-count");
 var submitBtn = document.querySelector("#submitBtn");
 var modelTrigger = document.querySelectorAll('.js-modal-trigger');
+var loginBtn = document.querySelector("#loginBtn");
+
+
 
 
 // Variable Declarations
@@ -25,13 +28,14 @@ function getTaskFromStorage(user) {
                
                vId = "TAM-" + dayjs().format('YYYYMMDD');
                console.log(vId);
+               taskList.innerHTML = "";
               // Object.entries(localStorage).forEach(([key, value]) => {
                tasksFromFirestore.forEach((task) => {
                     key = task.key;
                     value = task.value;   
                     // Display data based on the current date. When the if condition is commented all task of that user will be displayed.
                     // This condition is added, so that on future developments, the tasks can be navigated based on dates. 
-                    if (key.startsWith(vId)) {
+               //     if (key.startsWith(vId)) {
                          
                          console.log(key + "==im here==" + value);
                          var divEl = document.createElement("div");
@@ -54,7 +58,7 @@ function getTaskFromStorage(user) {
                          editBtn.addEventListener("click", editTaskItem);
                          deleteBtn.addEventListener("click", deleteTaskItem);
                          taskList.appendChild(divEl);
-                    }
+               //     }
                });                   
           }).catch((err) => {
                 console.error(err);
@@ -169,15 +173,6 @@ function deleteTaskFromLocalStorage(taskKey) {
      });
 }
 
-// EventListeners
-taskForm.addEventListener("submit", addTaskItem);
-// On page loads, the login function is called which shows the Google login option
- import("./firebasestorage.js").then((module) => {
-          console.log("Signing in");
-          module.login();
-     });
-/*getTaskFromStorage(); */
-
 // Functions to open and close modals
 function openModal($el) {
     $el.classList.add('is-active');
@@ -186,6 +181,33 @@ function openModal($el) {
 function closeModal($el) {
     $el.classList.remove('is-active');
 }
+
+
+// EventListeners
+taskForm.addEventListener("submit", addTaskItem);
+// Opening login page on button click
+loginBtn.addEventListener("click", function (e) {
+     e.preventDefault();
+     import("./firebasestorage.js").then((module) => {
+          console.log("Signing in");
+          module.login();  
+     });
+});
+
+
+function loadUserName() {
+     var displayUserNameEl = document.getElementById("displayUserName");
+    //loginBtn.createAttribute("style");
+     loginBtn.classList.value = "hideElement";
+     import("./firebasestorage.js").then((module) => {
+          displayUserNameEl.classList.value = "showElement";
+          displayUserNameEl.innerHTML = "Hello, " + module.getUser().displayName;
+     });
+}
+     
+
+/*getTaskFromStorage(); */
+
 
 
 
