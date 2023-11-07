@@ -16,7 +16,9 @@ The application source code can be accessed using the link https://github.com/Vi
 
 The code can be downloaded from the above link. To use this webpage, click the HTML page, which will open in the browser. The view the code, open the webpage in an HTML editor. When opened in a browser, the HTML page is viewed as below.
 
-![Alt text](assets/images/LandingPageAfterLogin.png)
+![Alt text](assets/images/WithLoginButton.png)
+
+![Alt text](assets/images/LoginUserDisplay.png)
 
 ### During editing
 ![Alt text](assets/images/EditScreen.png)
